@@ -1,0 +1,1990 @@
+diff --git a/conf/G1IDE_SCIF b/conf/G1IDE_SCIF
+new file mode 100644
+index 0000000..f493227
+--- /dev/null
++++ b/conf/G1IDE_SCIF
+@@ -0,0 +1,258 @@
++# $NetBSD: GENERIC,v 1.115.6.3 2015/05/15 03:44:17 snj Exp $
++#
++# GENERIC machine description file
++# 
++# This machine description file is used to generate the default NetBSD
++# kernel.  The generic kernel does not include all options, subsystems
++# and device drivers, but should be useful for most applications.
++#
++# The machine description file can be customised for your specific
++# machine to reduce the kernel size and improve its performance.
++#
++# For further information on compiling NetBSD kernels, see the config(8)
++# man page.
++#
++# For further information on hardware support for this architecture, see
++# the intro(4) man page.  For further information about kernel options
++# for this architecture, see the options(4) man page.  For an explanation
++# of each device driver in this file see the section 4 man page for the
++# device.
++
++include 	"arch/dreamcast/conf/std.dreamcast"
++
++options 	INCLUDE_CONFIG_FILE	# embed config file in kernel binary
++
++maxusers	16		# estimated number of users
++
++# Standard system options
++#options 	INSECURE	# disable kernel security levels
++
++#options 	RTC_OFFSET=-540
++options 	HZ=100		# clock interrupt generates every 1/HZ sec
++options 	NTP		# NTP phase/frequency locked loop
++
++options 	KTRACE		# system call tracing via ktrace(1)
++
++#options 	USERCONF	# userconf(4) support
++#options 	PIPE_SOCKETPAIR	# smaller, but slower pipe(2)
++options 	SYSCTL_INCLUDE_DESCR	# Include sysctl descriptions in kernel
++
++options 	SYSVMSG		# System V-like message queues
++options 	SYSVSEM		# System V-like semaphores
++options 	SYSVSHM		# System V-like memory sharing
++
++#options 	MODULAR		# new style module(7) framework
++#options 	MODULAR_DEFAULT_AUTOLOAD
++
++# Diagnostic/debugging support options
++#options 	DIAGNOSTIC	# cheap kernel consistency checks
++#options 	DEBUG		# expensive debugging checks/support
++#options 	KMEMSTATS	# kernel memory statistics (vmstat -m)
++options 	DDB		# in-kernel debugger
++#options 	KGDB			# remote debugger
++#options 	"KGDB_DEVNAME=\"scif\"",KGDB_DEVRATE=57600
++#makeoptions	DEBUG="-g"	# compile full symbol table
++options 	SYMTAB_SPACE=330000
++#options 	SYSCALL_DEBUG
++#options 	UVMHIST
++#options 	UVMHIST_PRINT
++
++# Compatibility options
++options 	COMPAT_16	# NetBSD 1.6,
++options 	COMPAT_20	# NetBSD 2.0,
++options 	COMPAT_30	# NetBSD 3.0,
++options 	COMPAT_40	# NetBSD 4.0 compatibility.
++options 	COMPAT_50	# NetBSD 5.0 compatibility.
++options 	COMPAT_60	# NetBSD 6.0 compatibility.
++options 	COMPAT_43	# and 4.3BSD
++#options 	TCP_COMPAT_42	# 4.2BSD TCP/IP bug compat. Not recommended.
++options 	COMPAT_BSDPTY	# /dev/[pt]ty?? ptys.
++
++# Executable format options
++#options 	EXEC_COFF	# COFF executables
++
++# File systems
++file-system 	FFS		# UFS
++#file-system	EXT2FS		# second extended file system (linux)
++#file-system	LFS		# log-structured file system
++file-system 	MFS		# memory file system
++file-system 	NFS		# Network File System client
++file-system	CD9660		# CD-ROM file system
++file-system	MSDOSFS		# MS-DOS file system
++file-system	FDESC		# /dev/fd
++file-system 	KERNFS		# /kern
++file-system 	PROCFS		# /proc
++file-system 	NULLFS		# loopback file system
++#file-system	OVERLAY		# overlay file system
++#file-system 	UMAPFS		# NULLFS + uid and gid remapping
++#file-system	UNION		# union file system
++file-system	PTYFS		# /dev/pts/N support
++file-system	TMPFS		# Efficient memory file-system
++#file-system	UDF		# experimental - OSTA UDF CD/DVD file-system
++
++# File system options
++#options 	QUOTA		# legacy UFS quotas
++#options 	QUOTA2		# new, in-filesystem UFS quotas
++#options 	FFS_EI		# FFS Endian Independent supoprt
++options 	WAPBL		# File system journaling support
++#options 	UFS_DIRHASH	# UFS Large Directory Hashing - Experimental
++#options 	NFSSERVER	# Network File System server
++options 	FFS_NO_SNAPSHOT	# No FFS snapshot support
++#options 	UFS_EXTATTR	# Extended attribute support for UFS1
++#options 	EXT2FS_SYSTEM_FLAGS # makes ext2fs file flags (append and
++				# immutable) behave as system flags.
++
++# Networking options
++options 	INET		# IP + ICMP + TCP + UDP
++options 	INET6		# IPV6
++#options 	IPSEC		# IP security
++#options 	IPSEC_DEBUG	# debug for IP security
++#options 	MROUTING	# IP multicast routing
++#options 	PIM		# Protocol Independent Multicast
++#options 	NETATALK	# AppleTalk networking protocols
++#options 	PPP_BSDCOMP	# BSD-Compress compression support for PPP
++#options 	PPP_DEFLATE	# Deflrate compression support for PPP
++#options 	PPP_FILTER	# Active filter support for PPP (requires bpf)
++#options 	IPFILTER_LOG	# ipmon(8) log support
++#options 	IPFILTER_LOOKUP	# ippool(8) support
++#options 	IPFILTER_DEFAULT_BLOCK	# block all packets by default
++#options 	TCP_DEBUG	# Record last TCP_NDEBUG packets with SO_DEBUG
++
++#options 	ALTQ		# Manipulate network interfaces' output queues
++#options 	ALTQ_BLUE	# Stochastic Fair Blue
++#options 	ALTQ_CBQ	# Class-Based Queueing
++#options 	ALTQ_CDNR	# Diffserv Traffic Conditioner
++#options 	ALTQ_FIFOQ	# First-In First-Out Queue
++#options 	ALTQ_FLOWVALVE	# RED/flow-valve (red-penalty-box)
++#options 	ALTQ_HFSC	# Hierarchical Fair Service Curve
++#options 	ALTQ_LOCALQ	# Local queueing discipline
++#options 	ALTQ_PRIQ	# Priority Queueing
++#options 	ALTQ_RED	# Random Early Detection
++#options 	ALTQ_RIO	# RED with IN/OUT
++#options 	ALTQ_WFQ	# Weighted Fair Queueing
++
++#options 	PCIVERBOSE	# verbose PCI device autoconfig messages
++#options 	MIIVERBOSE	# verbose PHY autoconfig messages
++#options 	PCI_CONFIG_DUMP	# verbosely dump PCI config space
++
++options 	NFS_BOOT_DHCP	# Support DHCP NFS root
++
++options 	KLOADER		# in-kernel bootloader
++#options 	KLOADER_DEBUG
++
++# wscons options
++options 	WSEMUL_VT100		# VT100 / VT220 emulation
++options 	WSDISPLAY_COMPAT_USL		# wsconscfg VT handling
++options 	FONT_BOLD8x16
++#options 	FONT_SONY8x16
++
++# Kernel root file system and dump configuration.
++#config		netbsd	root on ? type nfs
++#config		netbsd	root on wd0a type ffs
++config		netbsd	root on ? type ?
++
++#
++# Device configuration
++#
++
++mainbus0 at root
++
++cpu*		at mainbus?
++shb*		at mainbus?
++
++# Serial Devices
++options 	SCIFCONSOLE
++options 	SCIFCN_SPEED=57600
++scif0		at shb?
++
++pvr0		at shb?
++wsdisplay*	at pvr? console ?
++
++maple0		at shb?
++
++mkbd*		at maple? port ? subunit ?
++wskbd*		at mkbd? mux 1 console ?
++
++mms*		at maple? port ? subunit ?
++wsmouse*	at mms? mux 0
++
++mmem*		at maple? port ? subunit ?
++mlcd*		at maple? port ? subunit ?
++
++#gdrom0		at shb?
++
++g1bus0		at shb?
++wdc0		at g1bus?
++atabus*		at wdc? channel ?
++wd*		at atabus? drive ? flags 0x0000
++options 	ATADEBUG
++options 	ATADEBUG_MASK=DEBUG_PROBE
++#options 	ATADEBUG_MASK="(DEBUG_PROBE|DEBUG_XFERS)"
++atapibus*	at atabus?
++gdrom0		at atapibus?
++#cd*		at atapibus?
++
++g2bus0		at shb?
++g2rtc0		at g2bus?			# time-of-day clock
++gapspci*	at g2bus?			# GAPS PCI bridge
++pci*		at gapspci?
++rtk*		at pci? dev ? function ?	# SEGA Broadband Adapter
++rlphy*		at mii? phy ?
++
++#mbe*		at g2bus?			# SEGA LAN Adapter
++
++#aica*		at g2bus?			# AICA Sound Processing Unit
++#audio*		at aica?
++
++#pseudo-device	cgd			# cryptographic disk devices
++pseudo-device	md			# memory disk device (ramdisk)
++pseudo-device	vnd			# disk-like interface to files
++#options 	VND_COMPRESSION		# compressed vnd(4)
++
++# network pseudo-devices
++pseudo-device	bpfilter		# Berkeley packet filter
++#pseudo-device	carp			# Common Address Redundancy Protocol
++#pseudo-device	ipfilter		# IP filter (firewall) and NAT
++pseudo-device	loop			# network loopback
++#pseudo-device	ppp			# Point-to-Point Protocol
++#pseudo-device	pppoe			# PPP over Ethernet (RFC 2516)
++#pseudo-device	sl			# Serial Line IP
++#pseudo-device	tun			# network tunneling over tty
++#pseudo-device	tap			# virtual Ethernet
++#pseudo-device	gre			# generic L3 over IP tunnel
++#pseudo-device	gif			# IPv[46] over IPv[46] tunnel (RFC1933)
++#pseudo-device	faith			# IPv[46] tcp relay translation i/f
++#pseudo-device	stf			# 6to4 IPv6 over IPv4 encapsulation
++#pseudo-device	vlan			# IEEE 802.1q encapsulation
++#pseudo-device	bridge			# simple inter-network bridging
++#options 	BRIDGE_IPF		# bridge uses IP/IPv6 pfil hooks too
++#pseudo-device	agr			# IEEE 802.3ad link aggregation
++
++#
++# accept filters
++#pseudo-device   accf_data		# "dataready" accept filter
++#pseudo-device   accf_http		# "httpready" accept filter
++
++# miscellaneous pseudo-devices
++pseudo-device	pty			# pseudo-terminals
++pseudo-device	clockctl		# user control of clock subsystem
++pseudo-device	wsmux			# mouse & keyboard multiplexor
++pseudo-device	ksyms			# /dev/ksyms
++#pseudo-device	pf			# PF packet filter
++#pseudo-device	pflog			# PF log if
++
++# Veriexec
++#
++# a pseudo device needed for veriexec
++#pseudo-device	veriexec
++#
++# Uncomment the fingerprint methods below that are desired. Note that
++# removing fingerprint methods will have almost no impact on the kernel
++# code size.
++#
++#options VERIFIED_EXEC_FP_RMD160
++#options VERIFIED_EXEC_FP_SHA256
++#options VERIFIED_EXEC_FP_SHA384
++#options VERIFIED_EXEC_FP_SHA512
++#options VERIFIED_EXEC_FP_SHA1
++#options VERIFIED_EXEC_FP_MD5
+diff --git a/conf/SCIF b/conf/SCIF
+new file mode 100644
+index 0000000..e588d36
+--- /dev/null
++++ b/conf/SCIF
+@@ -0,0 +1,247 @@
++# $NetBSD: GENERIC,v 1.115.6.3 2015/05/15 03:44:17 snj Exp $
++#
++# GENERIC machine description file
++# 
++# This machine description file is used to generate the default NetBSD
++# kernel.  The generic kernel does not include all options, subsystems
++# and device drivers, but should be useful for most applications.
++#
++# The machine description file can be customised for your specific
++# machine to reduce the kernel size and improve its performance.
++#
++# For further information on compiling NetBSD kernels, see the config(8)
++# man page.
++#
++# For further information on hardware support for this architecture, see
++# the intro(4) man page.  For further information about kernel options
++# for this architecture, see the options(4) man page.  For an explanation
++# of each device driver in this file see the section 4 man page for the
++# device.
++
++include 	"arch/dreamcast/conf/std.dreamcast"
++
++options 	INCLUDE_CONFIG_FILE	# embed config file in kernel binary
++
++maxusers	16		# estimated number of users
++
++# Standard system options
++#options 	INSECURE	# disable kernel security levels
++
++#options 	RTC_OFFSET=-540
++options 	HZ=100		# clock interrupt generates every 1/HZ sec
++options 	NTP		# NTP phase/frequency locked loop
++
++options 	KTRACE		# system call tracing via ktrace(1)
++
++#options 	USERCONF	# userconf(4) support
++#options 	PIPE_SOCKETPAIR	# smaller, but slower pipe(2)
++options 	SYSCTL_INCLUDE_DESCR	# Include sysctl descriptions in kernel
++
++options 	SYSVMSG		# System V-like message queues
++options 	SYSVSEM		# System V-like semaphores
++options 	SYSVSHM		# System V-like memory sharing
++
++#options 	MODULAR		# new style module(7) framework
++#options 	MODULAR_DEFAULT_AUTOLOAD
++
++# Diagnostic/debugging support options
++#options 	DIAGNOSTIC	# cheap kernel consistency checks
++#options 	DEBUG		# expensive debugging checks/support
++#options 	KMEMSTATS	# kernel memory statistics (vmstat -m)
++options 	DDB		# in-kernel debugger
++#options 	KGDB			# remote debugger
++#options 	"KGDB_DEVNAME=\"scif\"",KGDB_DEVRATE=57600
++#makeoptions	DEBUG="-g"	# compile full symbol table
++options 	SYMTAB_SPACE=330000
++#options 	SYSCALL_DEBUG
++#options 	UVMHIST
++#options 	UVMHIST_PRINT
++
++# Compatibility options
++options 	COMPAT_16	# NetBSD 1.6,
++options 	COMPAT_20	# NetBSD 2.0,
++options 	COMPAT_30	# NetBSD 3.0,
++options 	COMPAT_40	# NetBSD 4.0 compatibility.
++options 	COMPAT_50	# NetBSD 5.0 compatibility.
++options 	COMPAT_60	# NetBSD 6.0 compatibility.
++options 	COMPAT_43	# and 4.3BSD
++#options 	TCP_COMPAT_42	# 4.2BSD TCP/IP bug compat. Not recommended.
++options 	COMPAT_BSDPTY	# /dev/[pt]ty?? ptys.
++
++# Executable format options
++#options 	EXEC_COFF	# COFF executables
++
++# File systems
++file-system 	FFS		# UFS
++#file-system	EXT2FS		# second extended file system (linux)
++#file-system	LFS		# log-structured file system
++file-system 	MFS		# memory file system
++file-system 	NFS		# Network File System client
++file-system	CD9660		# CD-ROM file system
++#file-system	MSDOSFS		# MS-DOS file system
++file-system	FDESC		# /dev/fd
++file-system 	KERNFS		# /kern
++file-system 	PROCFS		# /proc
++file-system 	NULLFS		# loopback file system
++#file-system	OVERLAY		# overlay file system
++#file-system 	UMAPFS		# NULLFS + uid and gid remapping
++#file-system	UNION		# union file system
++file-system	PTYFS		# /dev/pts/N support
++file-system	TMPFS		# Efficient memory file-system
++#file-system	UDF		# experimental - OSTA UDF CD/DVD file-system
++
++# File system options
++#options 	QUOTA		# legacy UFS quotas
++#options 	QUOTA2		# new, in-filesystem UFS quotas
++#options 	FFS_EI		# FFS Endian Independent supoprt
++options 	WAPBL		# File system journaling support
++#options 	UFS_DIRHASH	# UFS Large Directory Hashing - Experimental
++#options 	NFSSERVER	# Network File System server
++options 	FFS_NO_SNAPSHOT	# No FFS snapshot support
++#options 	UFS_EXTATTR	# Extended attribute support for UFS1
++#options 	EXT2FS_SYSTEM_FLAGS # makes ext2fs file flags (append and
++				# immutable) behave as system flags.
++
++# Networking options
++options 	INET		# IP + ICMP + TCP + UDP
++options 	INET6		# IPV6
++#options 	IPSEC		# IP security
++#options 	IPSEC_DEBUG	# debug for IP security
++#options 	MROUTING	# IP multicast routing
++#options 	PIM		# Protocol Independent Multicast
++#options 	NETATALK	# AppleTalk networking protocols
++#options 	PPP_BSDCOMP	# BSD-Compress compression support for PPP
++#options 	PPP_DEFLATE	# Deflrate compression support for PPP
++#options 	PPP_FILTER	# Active filter support for PPP (requires bpf)
++#options 	IPFILTER_LOG	# ipmon(8) log support
++#options 	IPFILTER_LOOKUP	# ippool(8) support
++#options 	IPFILTER_DEFAULT_BLOCK	# block all packets by default
++#options 	TCP_DEBUG	# Record last TCP_NDEBUG packets with SO_DEBUG
++
++#options 	ALTQ		# Manipulate network interfaces' output queues
++#options 	ALTQ_BLUE	# Stochastic Fair Blue
++#options 	ALTQ_CBQ	# Class-Based Queueing
++#options 	ALTQ_CDNR	# Diffserv Traffic Conditioner
++#options 	ALTQ_FIFOQ	# First-In First-Out Queue
++#options 	ALTQ_FLOWVALVE	# RED/flow-valve (red-penalty-box)
++#options 	ALTQ_HFSC	# Hierarchical Fair Service Curve
++#options 	ALTQ_LOCALQ	# Local queueing discipline
++#options 	ALTQ_PRIQ	# Priority Queueing
++#options 	ALTQ_RED	# Random Early Detection
++#options 	ALTQ_RIO	# RED with IN/OUT
++#options 	ALTQ_WFQ	# Weighted Fair Queueing
++
++#options 	PCIVERBOSE	# verbose PCI device autoconfig messages
++#options 	MIIVERBOSE	# verbose PHY autoconfig messages
++#options 	PCI_CONFIG_DUMP	# verbosely dump PCI config space
++
++options 	NFS_BOOT_DHCP	# Support DHCP NFS root
++
++options 	KLOADER		# in-kernel bootloader
++#options 	KLOADER_DEBUG
++
++# wscons options
++options 	WSEMUL_VT100		# VT100 / VT220 emulation
++options 	WSDISPLAY_COMPAT_USL		# wsconscfg VT handling
++options 	FONT_BOLD8x16
++#options 	FONT_SONY8x16
++
++# Kernel root file system and dump configuration.
++#config		netbsd	root on ? type nfs
++#config		netbsd	root on wd0a type ffs
++config		netbsd	root on ? type ?
++
++#
++# Device configuration
++#
++
++mainbus0 at root
++
++cpu*		at mainbus?
++shb*		at mainbus?
++
++# Serial Devices
++options 	SCIFCONSOLE
++options 	SCIFCN_SPEED=57600
++scif0		at shb?
++
++pvr0		at shb?
++wsdisplay*	at pvr? console ?
++
++maple0		at shb?
++
++mkbd*		at maple? port ? subunit ?
++wskbd*		at mkbd? mux 1 console ?
++
++mms*		at maple? port ? subunit ?
++wsmouse*	at mms? mux 0
++
++mmem*		at maple? port ? subunit ?
++mlcd*		at maple? port ? subunit ?
++
++gdrom0		at shb?
++
++g2bus0		at shb?
++g2rtc0		at g2bus?			# time-of-day clock
++gapspci*	at g2bus?			# GAPS PCI bridge
++pci*		at gapspci?
++rtk*		at pci? dev ? function ?	# SEGA Broadband Adapter
++rlphy*		at mii? phy ?
++
++#mbe*		at g2bus?			# SEGA LAN Adapter
++
++#aica*		at g2bus?			# AICA Sound Processing Unit
++#audio*		at aica?
++
++#pseudo-device	cgd			# cryptographic disk devices
++pseudo-device	md			# memory disk device (ramdisk)
++pseudo-device	vnd			# disk-like interface to files
++#options 	VND_COMPRESSION		# compressed vnd(4)
++
++# network pseudo-devices
++pseudo-device	bpfilter		# Berkeley packet filter
++#pseudo-device	carp			# Common Address Redundancy Protocol
++#pseudo-device	ipfilter		# IP filter (firewall) and NAT
++pseudo-device	loop			# network loopback
++#pseudo-device	ppp			# Point-to-Point Protocol
++#pseudo-device	pppoe			# PPP over Ethernet (RFC 2516)
++#pseudo-device	sl			# Serial Line IP
++#pseudo-device	tun			# network tunneling over tty
++#pseudo-device	tap			# virtual Ethernet
++#pseudo-device	gre			# generic L3 over IP tunnel
++#pseudo-device	gif			# IPv[46] over IPv[46] tunnel (RFC1933)
++#pseudo-device	faith			# IPv[46] tcp relay translation i/f
++#pseudo-device	stf			# 6to4 IPv6 over IPv4 encapsulation
++#pseudo-device	vlan			# IEEE 802.1q encapsulation
++#pseudo-device	bridge			# simple inter-network bridging
++#options 	BRIDGE_IPF		# bridge uses IP/IPv6 pfil hooks too
++#pseudo-device	agr			# IEEE 802.3ad link aggregation
++
++#
++# accept filters
++#pseudo-device   accf_data		# "dataready" accept filter
++#pseudo-device   accf_http		# "httpready" accept filter
++
++# miscellaneous pseudo-devices
++pseudo-device	pty			# pseudo-terminals
++pseudo-device	clockctl		# user control of clock subsystem
++pseudo-device	wsmux			# mouse & keyboard multiplexor
++pseudo-device	ksyms			# /dev/ksyms
++#pseudo-device	pf			# PF packet filter
++#pseudo-device	pflog			# PF log if
++
++# Veriexec
++#
++# a pseudo device needed for veriexec
++#pseudo-device	veriexec
++#
++# Uncomment the fingerprint methods below that are desired. Note that
++# removing fingerprint methods will have almost no impact on the kernel
++# code size.
++#
++#options VERIFIED_EXEC_FP_RMD160
++#options VERIFIED_EXEC_FP_SHA256
++#options VERIFIED_EXEC_FP_SHA384
++#options VERIFIED_EXEC_FP_SHA512
++#options VERIFIED_EXEC_FP_SHA1
++#options VERIFIED_EXEC_FP_MD5
+diff --git a/conf/files.dreamcast b/conf/files.dreamcast
+index dc4eda3..0760b55 100644
+--- a/conf/files.dreamcast
++++ b/conf/files.dreamcast
+@@ -77,9 +77,21 @@ device	pvr: wsemuldisplaydev, rasops16
+ attach	pvr at shb
+ file	arch/dreamcast/dev/pvr.c			pvr	needs-flag
+ 
++#device	gdrom: disk
++#attach	gdrom at shb
++#file	arch/dreamcast/dev/gdrom.c			gdrom	needs-flag
++
++device	g1bus { }
++attach	g1bus at shb
++file	arch/dreamcast/dev/g1/g1bus.c			g1bus
++file	arch/dreamcast/dev/g1/g1bus_bus_mem.c		g1bus
++
++attach	wdc at g1bus with wdc_g1bus
++file	arch/dreamcast/dev/g1/wdc_g1.c			wdc_g1bus
++
+ device	gdrom: disk
+-attach	gdrom at shb
+-file	arch/dreamcast/dev/gdrom.c			gdrom	needs-flag
++attach	gdrom at atapibus
++file	arch/dreamcast/dev/g1/gdrom.c			gdrom	needs-flag
+ 
+ device	g2bus { }
+ attach	g2bus at shb
+diff --git a/dev/g1/g1bus.c b/dev/g1/g1bus.c
+new file mode 100644
+index 0000000..62fb5fe
+--- /dev/null
++++ b/dev/g1/g1bus.c
+@@ -0,0 +1,96 @@
++/*	$NetBSD: g2bus.c,v 1.14 2010/11/21 16:11:32 tsutsui Exp $	*/
++
++/*-
++ * Copyright (c) 2001 Marcus Comstedt
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ * 3. All advertising materials mentioning features or use of this software
++ *    must display the following acknowledgement:
++ *	This product includes software developed by Marcus Comstedt.
++ * 4. Neither the name of The NetBSD Foundation nor the names of its
++ *    contributors may be used to endorse or promote products derived
++ *    from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
++ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
++ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
++ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++
++#include <sys/cdefs.h>
++__KERNEL_RCSID(0, "$NetBSD: g2bus.c,v 1.14 2010/11/21 16:11:32 tsutsui Exp $");
++
++#include <sys/param.h>
++#include <sys/systm.h>
++#include <sys/kernel.h>
++#include <sys/conf.h>
++#include <sys/malloc.h>
++#include <sys/device.h>
++#include <sys/proc.h>
++
++#include <dreamcast/dev/g1/g1busvar.h>
++
++int	g1busmatch(device_t, cfdata_t, void *);
++void	g1busattach(device_t, device_t, void *);
++int	g1busprint(void *, const char *);
++
++CFATTACH_DECL_NEW(g1bus, sizeof(struct g1bus_softc),
++    g1busmatch, g1busattach, NULL, NULL);
++
++int	g1bussearch(device_t, cfdata_t, const int *, void *);
++
++int
++g1busmatch(device_t parent, cfdata_t cf, void *aux)
++{
++
++	return 1;
++}
++
++void
++g1busattach(device_t parent, device_t self, void *aux)
++{
++	struct g1bus_softc *sc = device_private(self);
++	struct g1bus_attach_args ga;
++
++	sc->sc_dev = self;
++	printf("\n");
++
++	g1bus_bus_mem_init(sc);
++
++	ga.ga_memt = &sc->sc_memt;
++
++	config_search_ia(g1bussearch, self, "g1bus", &ga);
++}
++
++int
++g1busprint(void *aux, const char *pnp)
++{
++
++	return UNCONF;
++}
++
++int
++g1bussearch(device_t parent, cfdata_t cf, const int *ldesc, void *aux)
++{
++
++	if (config_match(parent, cf, aux) > 0)
++		config_attach(parent, cf, aux, g1busprint);
++
++	return 0;
++}
+diff --git a/dev/g1/g1bus_bus_mem.c b/dev/g1/g1bus_bus_mem.c
+new file mode 100644
+index 0000000..c027908
+--- /dev/null
++++ b/dev/g1/g1bus_bus_mem.c
+@@ -0,0 +1,435 @@
++/*	$NetBSD: g2bus_bus_mem.c,v 1.16 2011/07/19 15:52:29 dyoung Exp $	*/
++
++/*-
++ * Copyright (c) 2001 The NetBSD Foundation, Inc.
++ * All rights reserved.
++ *
++ * This code is derived from software contributed to The NetBSD Foundation
++ * by Jason R. Thorpe.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
++ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
++ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
++ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++/*
++ * Bus space implementation for the SEGA G1 bus, for GD-ROM and IDE port.
++ */
++
++#include <sys/cdefs.h>			/* RCS ID & Copyright macro defns */
++__KERNEL_RCSID(0, "$NetBSD: g2bus_bus_mem.c,v 1.16 2011/07/19 15:52:29 dyoung Exp $");
++
++#include <sys/param.h>
++#include <sys/systm.h>
++#include <sys/device.h>
++#include <sys/bus.h>
++
++#include <machine/cpu.h>
++
++#include <dreamcast/dev/g1/g1busvar.h>
++
++int	g1bus_bus_mem_map(void *, bus_addr_t, bus_size_t, int,
++	    bus_space_handle_t *);
++void	g1bus_bus_mem_unmap(void *, bus_space_handle_t, bus_size_t);
++int	g1bus_bus_mem_subregion(void *, bus_space_handle_t, bus_size_t,
++	    bus_size_t, bus_space_handle_t *);
++paddr_t	g1bus_bus_mem_mmap(void *, bus_addr_t, off_t, int, int);
++
++uint8_t g1bus_bus_mem_read_1(void *, bus_space_handle_t, bus_size_t);
++uint16_t g1bus_bus_mem_read_2(void *, bus_space_handle_t, bus_size_t);
++uint32_t g1bus_bus_mem_read_4(void *, bus_space_handle_t, bus_size_t);
++
++void	g1bus_bus_mem_write_1(void *, bus_space_handle_t, bus_size_t,
++	    uint8_t);
++void	g1bus_bus_mem_write_2(void *, bus_space_handle_t, bus_size_t,
++	    uint16_t);
++void	g1bus_bus_mem_write_4(void *, bus_space_handle_t, bus_size_t,
++	    uint32_t);
++
++void	g1bus_bus_mem_read_region_1(void *, bus_space_handle_t, bus_size_t,
++	    uint8_t *, bus_size_t);
++void	g1bus_bus_mem_read_region_2(void *, bus_space_handle_t, bus_size_t,
++	    uint16_t *, bus_size_t);
++void	g1bus_bus_mem_read_region_4(void *, bus_space_handle_t, bus_size_t,
++	    uint32_t *, bus_size_t);
++
++void	g1bus_bus_mem_write_region_1(void *, bus_space_handle_t, bus_size_t,
++	    const uint8_t *, bus_size_t);
++void	g1bus_bus_mem_write_region_2(void *, bus_space_handle_t, bus_size_t,
++	    const uint16_t *, bus_size_t);
++void	g1bus_bus_mem_write_region_4(void *, bus_space_handle_t, bus_size_t,
++	    const uint32_t *, bus_size_t);
++
++void	g1bus_bus_mem_set_region_4(void *, bus_space_handle_t, bus_size_t,
++	    uint32_t, bus_size_t);
++
++void	g1bus_bus_mem_read_multi_1(void *, bus_space_handle_t,
++	    bus_size_t, uint8_t *, bus_size_t);
++void	g1bus_bus_mem_read_multi_2(void *, bus_space_handle_t,
++	    bus_size_t, uint16_t *, bus_size_t);
++
++void	g1bus_bus_mem_write_multi_1(void *, bus_space_handle_t,
++	    bus_size_t, const uint8_t *, bus_size_t);
++void	g1bus_bus_mem_write_multi_2(void *, bus_space_handle_t,
++	    bus_size_t, const uint16_t *, bus_size_t);
++
++void
++g1bus_bus_mem_init(struct g1bus_softc *sc)
++{
++	bus_space_tag_t t = &sc->sc_memt;
++
++	memset(t, 0, sizeof(*t));
++
++	t->dbs_map = g1bus_bus_mem_map;
++	t->dbs_unmap = g1bus_bus_mem_unmap;
++	t->dbs_subregion = g1bus_bus_mem_subregion;
++	t->dbs_mmap = g1bus_bus_mem_mmap;
++
++	t->dbs_r_1 = g1bus_bus_mem_read_1;
++	t->dbs_r_2 = g1bus_bus_mem_read_2;
++	t->dbs_r_4 = g1bus_bus_mem_read_4;
++
++	t->dbs_w_1 = g1bus_bus_mem_write_1;
++	t->dbs_w_2 = g1bus_bus_mem_write_2;
++	t->dbs_w_4 = g1bus_bus_mem_write_4;
++
++	t->dbs_rm_1 = g1bus_bus_mem_read_multi_1;
++	t->dbs_rm_2 = g1bus_bus_mem_read_multi_2;
++
++	t->dbs_wm_1 = g1bus_bus_mem_write_multi_1;
++	t->dbs_wm_2 = g1bus_bus_mem_write_multi_2;
++
++	t->dbs_rr_1 = g1bus_bus_mem_read_region_1;
++	t->dbs_rr_2 = g1bus_bus_mem_read_region_2;
++	t->dbs_rr_4 = g1bus_bus_mem_read_region_4;
++
++	t->dbs_wr_1 = g1bus_bus_mem_write_region_1;
++	t->dbs_wr_2 = g1bus_bus_mem_write_region_2;
++	t->dbs_wr_4 = g1bus_bus_mem_write_region_4;
++
++	t->dbs_sr_4 = g1bus_bus_mem_set_region_4;
++}
++
++int
++g1bus_bus_mem_map(void *v, bus_addr_t addr, bus_size_t size, int flags,
++    bus_space_handle_t *shp)
++{
++
++	KASSERT((addr & SH3_PHYS_MASK) == addr);
++	*shp = SH3_PHYS_TO_P2SEG(addr);
++
++	return 0;
++}
++
++void
++g1bus_bus_mem_unmap(void *v, bus_space_handle_t sh, bus_size_t size)
++{
++
++	KASSERT(sh >= SH3_P2SEG_BASE && sh <= SH3_P2SEG_END);
++	/* Nothing to do. */
++}
++
++int
++g1bus_bus_mem_subregion(void *v, bus_space_handle_t handle, bus_size_t offset,
++    bus_size_t size, bus_space_handle_t *nhandlep)
++{
++
++	*nhandlep = handle + offset;
++	return 0;
++}
++
++paddr_t
++g1bus_bus_mem_mmap(void *v, bus_addr_t addr, off_t offset, int prot, int flags)
++{
++
++	/* XXX not implemented */
++	return -1;
++}
++
++/*
++ * Not sure if G1 bus cycles must not be interrupted by IRQs or DMA as G2,
++ * but leave them for now.
++ */
++
++#define G2LOCK_DECL							\
++	int __s
++
++#define G2_LOCK()							\
++	do {								\
++		__s = _cpu_intr_suspend();				\
++		/* suspend any G2 DMA here... */			\
++		while ((*(volatile uint32_t *)0xa05f688c) & 0x20)	\
++			;						\
++	} while (/*CONSTCOND*/0)
++
++#define G2_UNLOCK()							\
++	do {								\
++		/* resume any G2 DMA here... */				\
++		_cpu_intr_resume(__s);					\
++	} while (/*CONSTCOND*/0)
++
++uint8_t
++g1bus_bus_mem_read_1(void *v, bus_space_handle_t sh, bus_size_t off)
++{
++	G2LOCK_DECL;
++	uint8_t rv;
++
++	G2_LOCK();
++
++	rv = *(volatile uint8_t *)(sh + off);
++
++	G2_UNLOCK();
++
++	return rv;
++}
++
++uint16_t
++g1bus_bus_mem_read_2(void *v, bus_space_handle_t sh, bus_size_t off)
++{
++	G2LOCK_DECL;
++	uint16_t rv;
++
++	G2_LOCK();
++
++	rv = *(volatile uint16_t *)(sh + off);
++
++	G2_UNLOCK();
++
++	return rv;
++}
++
++uint32_t
++g1bus_bus_mem_read_4(void *v, bus_space_handle_t sh, bus_size_t off)
++{
++	G2LOCK_DECL;
++	uint32_t rv;
++
++	G2_LOCK();
++
++	rv = *(volatile uint32_t *)(sh + off);
++
++	G2_UNLOCK();
++
++	return rv;
++}
++
++void
++g1bus_bus_mem_write_1(void *v, bus_space_handle_t sh, bus_size_t off,
++    uint8_t val)
++{
++	G2LOCK_DECL;
++
++	G2_LOCK();
++
++	*(volatile uint8_t *)(sh + off) = val;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_write_2(void *v, bus_space_handle_t sh, bus_size_t off,
++    uint16_t val)
++{
++	G2LOCK_DECL;
++
++	G2_LOCK();
++
++	*(volatile uint16_t *)(sh + off) = val;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_write_4(void *v, bus_space_handle_t sh, bus_size_t off,
++    uint32_t val)
++{
++	G2LOCK_DECL;
++
++	G2_LOCK();
++
++	*(volatile uint32_t *)(sh + off) = val;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_read_multi_1(void *v, bus_space_handle_t sh,
++    bus_size_t off, uint8_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile const uint8_t *baddr = (uint8_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*addr++ = *baddr;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_read_multi_2(void *v, bus_space_handle_t sh,
++    bus_size_t off, uint16_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile const uint16_t *baddr = (uint16_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*addr++ = *baddr;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_write_multi_1(void *v, bus_space_handle_t sh,
++    bus_size_t off, const uint8_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile uint8_t *baddr = (uint8_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*baddr = *addr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_write_multi_2(void *v, bus_space_handle_t sh,
++    bus_size_t off, const uint16_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile uint16_t *baddr = (uint16_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*baddr = *addr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_read_region_1(void *v, bus_space_handle_t sh, bus_size_t off,
++    uint8_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile const uint8_t *baddr = (uint8_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*addr++ = *baddr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_read_region_2(void *v, bus_space_handle_t sh, bus_size_t off,
++    uint16_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile const uint16_t *baddr = (uint16_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*addr++ = *baddr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_read_region_4(void *v, bus_space_handle_t sh, bus_size_t off,
++    uint32_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile const uint32_t *baddr = (uint32_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*addr++ = *baddr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_write_region_1(void *v, bus_space_handle_t sh, bus_size_t off,
++    const uint8_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile uint8_t *baddr = (uint8_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*baddr++ = *addr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_write_region_2(void *v, bus_space_handle_t sh, bus_size_t off,
++    const uint16_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile uint16_t *baddr = (uint16_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*baddr++ = *addr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_write_region_4(void *v, bus_space_handle_t sh, bus_size_t off,
++    const uint32_t *addr, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile uint32_t *baddr = (uint32_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*baddr++ = *addr++;
++
++	G2_UNLOCK();
++}
++
++void
++g1bus_bus_mem_set_region_4(void *v, bus_space_handle_t sh, bus_size_t off,
++    uint32_t val, bus_size_t len)
++{
++	G2LOCK_DECL;
++	volatile uint32_t *baddr = (uint32_t *)(sh + off);
++
++	G2_LOCK();
++
++	while (len--)
++		*baddr++ = val;
++
++	G2_UNLOCK();
++}
+diff --git a/dev/g1/g1busvar.h b/dev/g1/g1busvar.h
+new file mode 100644
+index 0000000..73de434
+--- /dev/null
++++ b/dev/g1/g1busvar.h
+@@ -0,0 +1,64 @@
++/*	$NetBSD: g2busvar.h,v 1.7 2012/10/27 17:17:44 chs Exp $	*/
++
++/*-
++ * Copyright (c) 2001 Marcus Comstedt
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ * 3. All advertising materials mentioning features or use of this software
++ *    must display the following acknowledgement:
++ *	This product includes software developed by Marcus Comstedt.
++ * 4. Neither the name of The NetBSD Foundation nor the names of its
++ *    contributors may be used to endorse or promote products derived
++ *    from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
++ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
++ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
++ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#ifndef _DREAMCAST_G1BUSVAR_H_
++#define _DREAMCAST_G1BUSVAR_H_
++
++#include <sys/bus.h>
++
++/*
++ * G1 driver attach arguments
++ */
++struct g1bus_attach_args {
++	bus_space_tag_t ga_memt;
++};
++
++/*
++ * Per-device G1 variables
++ */
++struct g1busdev {
++	device_t gd_dev;		/* back pointer to generic */
++};
++
++/*
++ * G1 master bus
++ */
++struct g1bus_softc {
++	device_t sc_dev;		/* base device */
++	struct dreamcast_bus_space sc_memt;
++};
++
++void	g1bus_bus_mem_init(struct g1bus_softc *);
++
++#endif /* _DREAMCAST_G1BUSVAR_H_ */
+diff --git a/dev/g1/gdrom.c b/dev/g1/gdrom.c
+new file mode 100644
+index 0000000..4e3ebc4
+--- /dev/null
++++ b/dev/g1/gdrom.c
+@@ -0,0 +1,602 @@
++/*	$NetBSD: gdrom.c,v 1.40 2014/07/25 08:10:32 dholland Exp $	*/
++
++/*-
++ * Copyright (c) 2001 Marcus Comstedt
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ * 3. All advertising materials mentioning features or use of this software
++ *    must display the following acknowledgement:
++ *	This product includes software developed by Marcus Comstedt.
++ * 4. Neither the name of The NetBSD Foundation nor the names of its
++ *    contributors may be used to endorse or promote products derived
++ *    from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
++ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
++ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
++ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#include <sys/cdefs.h>			/* RCS ID & Copyright macro defns */
++__KERNEL_RCSID(0, "$NetBSD: gdrom.c,v 1.40 2014/07/25 08:10:32 dholland Exp $");
++
++#include <sys/param.h>
++#include <sys/systm.h>
++#include <sys/device.h>
++
++#include <sys/buf.h>
++#include <sys/bufq.h>
++#include <sys/ioctl.h>
++#include <sys/fcntl.h>
++#include <sys/disklabel.h>
++#include <sys/disk.h>
++#include <sys/cdio.h>
++#include <sys/proc.h>
++#include <sys/conf.h>
++#include <sys/scsiio.h>
++
++#include <dev/scsipi/scsi_spc.h>
++#include <dev/scsipi/scsipi_all.h>
++#include <dev/scsipi/scsipi_cd.h>
++#include <dev/scsipi/scsipi_disk.h>
++#include <dev/scsipi/scsi_all.h>
++#include <dev/scsipi/scsi_disk.h>
++#include <dev/scsipi/scsipiconf.h>
++#include <dev/scsipi/scsipi_base.h>
++
++#include "ioconf.h"
++
++struct gdrom_softc {
++	device_t sc_dev;	/* generic device info */
++	struct disk sc_dk;	/* generic disk info */
++	struct bufq_state *sc_bufq;	/* device buffer queue */
++	struct buf curbuf;	/* state of current I/O operation */
++
++	kmutex_t sc_lock;
++	struct scsipi_periph *sc_periph;
++
++	bool is_open;
++	bool is_busy;
++	bool is_active;
++	int openpart_start;	/* start sector of currently open partition */
++
++	int cmd_active;
++	void *cmd_result_buf;	/* where to store result data (16 bit aligned) */
++	int cmd_result_size;	/* number of bytes allocated for buf */
++	int cmd_actual;		/* number of bytes actually read */
++	int cmd_cond;		/* resulting condition of command */
++};
++
++struct gd_toc {
++	unsigned int entry[99];
++	unsigned int first, last;
++	unsigned int leadout;
++};
++
++static int  gdrommatch(device_t, cfdata_t, void *);
++static void gdromattach(device_t, device_t, void *);
++
++#if 0
++static int gdrom_command_sense(struct gdrom_softc *, void *, void *,
++    unsigned int, int *);
++#endif
++static int gdrom_read_toc(struct gdrom_softc *, struct gd_toc *);
++static int gdrom_read_sectors(struct gdrom_softc *, struct buf *);
++static int gdrom_mount_disk(struct gdrom_softc *);
++static void gdrom_start(struct scsipi_periph *);
++static void gdrom_done(struct scsipi_xfer *, int);
++
++static const struct scsipi_inquiry_pattern gdrom_patterns[] = {
++	{T_DIRECT, T_FIXED,
++	 "", "DCR-MOD", ""},
++};
++
++static dev_type_open(gdromopen);
++static dev_type_close(gdromclose);
++static dev_type_read(gdromread);
++static dev_type_write(gdromwrite);
++static dev_type_ioctl(gdromioctl);
++static dev_type_strategy(gdromstrategy);
++
++const struct bdevsw gdrom_bdevsw = {
++	.d_open = gdromopen,
++	.d_close = gdromclose,
++	.d_strategy = gdromstrategy,
++	.d_ioctl = gdromioctl,
++	.d_dump = nodump,
++	.d_psize = nosize,
++	.d_discard = nodiscard,
++	.d_flag = D_DISK
++};
++
++const struct cdevsw gdrom_cdevsw = {
++	.d_open = gdromopen,
++	.d_close = gdromclose,
++	.d_read = gdromread,
++	.d_write = gdromwrite,
++	.d_ioctl = gdromioctl,
++	.d_stop = nostop,
++	.d_tty = notty,
++	.d_poll = nopoll,
++	.d_mmap = nommap,
++	.d_kqfilter = nokqfilter,
++	.d_discard = nodiscard,
++	.d_flag = D_DISK
++};
++
++CFATTACH_DECL_NEW(gdrom, sizeof(struct gdrom_softc),
++    gdrommatch, gdromattach, NULL, NULL);
++
++struct dkdriver gdromdkdriver = {
++	.d_strategy = gdromstrategy
++};
++
++static const struct scsipi_periphsw gdrom_switch = {
++	NULL/*gdrom_interpret_sense*/,	/* use our error handler first */
++	gdrom_start,		/* we have a queue, which is started by this */
++	NULL,			/* we do not have an async handler */
++	gdrom_done,		/* deal with stats at interrupt time */
++};
++
++#define GDROMDEBUG
++#ifdef GDROMDEBUG
++#define DPRINTF(x)	printf x
++#else
++#define DPRINTF(x)	/**/
++#endif
++
++#define TOC_LBA(n)	((n) & 0xffffff00)
++#define TOC_ADR(n)	((n) & 0x0f)
++#define TOC_CTRL(n)	(((n) & 0xf0) >> 4)
++#define TOC_TRACK(n)	(((n) & 0x0000ff00) >> 8)
++
++#if 0
++int gdrom_command_sense(struct gdrom_softc *sc, void *req, void *buf,
++    unsigned int nbyt, int *resid)
++{
++	/*
++	 *  76543210 76543210
++	 *  0   0x13      -
++	 *  2    -      bufsz(hi)
++	 *  4 bufsz(lo)   -
++	 *  6    -        -
++	 *  8    -        -
++	 * 10    -        -
++	 */
++	uint16_t sense_data[5];
++	uint8_t cmd[12];
++	int cond, sense_key, sense_specific;
++
++//	cond = gdrom_do_command(sc, req, buf, nbyt, resid);
++	cond = scsipi_command(sc->sc_periph, req, 12, buf, nbyt,
++	    4, 3000, NULL, XS_CTL_DATA_IN | XS_CTL_POLL);
++	if (resid != NULL)
++		*resid = nbyt;
++
++#if 1
++	if (cond < 0) {
++		DPRINTF(("GDROM: not ready (2:58)\n"));
++		return EIO;
++	}
++	
++	if ((cond & 1) == 0) {
++		DPRINTF(("GDROM: no sense.  0:0\n"));
++		return 0;
++	}
++#endif
++	
++	memset(cmd, 0, sizeof(cmd));
++	
++	cmd[0] = 0x13;
++	cmd[4] = sizeof(sense_data);
++	
++//	gdrom_do_command(sc, cmd, sense_data, sizeof(sense_data), NULL);
++	scsipi_command(sc->sc_periph, (void *)cmd, sizeof(cmd),
++	    (void *)sense_data, sizeof(sense_data),
++	    4, 3000, NULL, XS_CTL_DATA_IN | XS_CTL_POLL);
++	
++	sense_key = sense_data[1] & 0xf;
++	sense_specific = sense_data[4];
++	if (sense_key == 11 && sense_specific == 0) {
++		DPRINTF(("GDROM: aborted (ignored).  0:0\n"));
++		return 0;
++	}
++	
++	DPRINTF(("GDROM: SENSE %d:", sense_key));
++	DPRINTF(("GDROM: %d\n", sense_specific));
++	
++	return sense_key == 0 ? 0 : EIO;
++}
++#endif
++
++int gdrom_read_toc(struct gdrom_softc *sc, struct gd_toc *toc)
++{
++	/*
++	 *  76543210 76543210
++	 *  0   0x14      -
++	 *  2    -      bufsz(hi)
++	 *  4 bufsz(lo)   -
++	 *  6    -        -
++	 *  8    -        -
++	 * 10    -        -
++	 */
++	uint8_t cmd[12];
++
++	DPRINTF(("%s: called\n", __func__));
++	memset(cmd, 0, sizeof(cmd));
++	
++	cmd[0] = 0x14;
++	cmd[3] = sizeof(struct gd_toc) >> 8;
++	cmd[4] = sizeof(struct gd_toc) & 0xff;
++	
++//	return gdrom_command_sense(sc, cmd, toc, sizeof(struct gd_toc), NULL);
++	return scsipi_command(sc->sc_periph, (void *)cmd, 12,
++	    (void *)toc, sizeof(struct gd_toc),
++	    4, 3000, NULL, XS_CTL_DATA_IN | XS_CTL_POLL);
++}
++
++int gdrom_read_sectors(struct gdrom_softc *sc, struct buf *bp)
++{
++	/*
++	 *  76543210 76543210
++	 *  0   0x30    datafmt
++	 *  2  sec(hi)  sec(mid)
++	 *  4  sec(lo)    -
++	 *  6    -        -
++	 *  8  cnt(hi)  cnt(mid)
++	 * 10  cnt(lo)    -
++	 */
++	uint8_t cmd[12];
++	void *buf;
++	int sector, cnt;
++	int cond;
++
++	DPRINTF(("%s: called\n", __func__));
++
++	buf = bp->b_data;
++	sector = bp->b_rawblkno;
++	cnt = bp->b_bcount >> 11;
++
++	memset(cmd, 0, sizeof(cmd));
++
++	cmd[0]  = 0x30;
++	cmd[1]  = 0x20;
++	cmd[2]  = sector >> 16;
++	cmd[3]  = sector >>  8;
++	cmd[4]  = sector;
++	cmd[8]  = cnt >> 16;
++	cmd[9]  = cnt >>  8;
++	cmd[10] = cnt;
++
++//	return gdrom_command_sense(sc, cmd, buf, cnt << 11, resid);
++	cond = scsipi_command(sc->sc_periph, (void *)cmd, 12,
++	    (void *)buf, bp->b_bcount,
++	    4, 3000, bp, XS_CTL_DATA_IN | XS_CTL_POLL);
++
++	DPRINTF(("%s: cond = %d\n", __func__, cond));
++
++	return cond;
++}
++
++int gdrom_mount_disk(struct gdrom_softc *sc)
++{
++	/*
++	 *  76543210 76543210
++	 *  0   0x70      -
++	 *  2   0x1f      -
++	 *  4    -        -
++	 *  6    -        -
++	 *  8    -        -
++	 * 10    -        -
++	 */
++	uint8_t cmd[12];
++	int cond;
++
++	DPRINTF(("%s: called\n", __func__));
++	memset(cmd, 0, sizeof(cmd));
++	
++	cmd[0] = 0x70;
++	cmd[2] = 0x1f;
++	
++	cond = scsipi_command(sc->sc_periph, (void *)cmd, 12, NULL, 0,
++	    4, 3000, NULL, 0 | XS_CTL_POLL);
++
++	DPRINTF(("%s: cond = %d\n", __func__, cond));
++	return cond;
++}
++
++int
++gdrommatch(device_t parent, cfdata_t cf, void *aux)
++{
++	struct scsipibus_attach_args *sa = aux;
++	int priority;
++
++	(void)scsipi_inqmatch(&sa->sa_inqbuf,
++	    gdrom_patterns, __arraycount(gdrom_patterns),
++	    sizeof(gdrom_patterns[0]), &priority);
++
++	if (priority > 0) {
++		/* beat generic direct fixed device */
++		priority = 255;
++	}
++
++	return priority;
++}
++
++void
++gdromattach(device_t parent, device_t self, void *aux)
++{
++	struct gdrom_softc *sc;
++	struct scsipibus_attach_args *sa;
++	struct scsipi_periph *periph;
++
++	sc = device_private(self);
++	sa = aux;
++	periph = sa->sa_periph;
++	sc->sc_dev = self;
++	sc->sc_periph = periph;
++	periph->periph_dev = sc->sc_dev;
++	periph->periph_switch = &gdrom_switch;
++
++	mutex_init(&sc->sc_lock, MUTEX_DEFAULT, IPL_NONE);
++
++	bufq_alloc(&sc->sc_bufq, "disksort", BUFQ_SORT_RAWBLOCK);
++
++	/*
++	 * Initialize and attach the disk structure.
++	 */
++	disk_init(&sc->sc_dk, device_xname(self), &gdromdkdriver);
++	disk_attach(&sc->sc_dk);
++
++	aprint_normal("\n");
++	aprint_naive("\n");
++}
++
++int
++gdromopen(dev_t dev, int flags, int devtype, struct lwp *l)
++{
++	struct gdrom_softc *sc;
++	int s, error, unit, cnt;
++	struct gd_toc toc;
++
++	DPRINTF(("GDROM: open\n"));
++
++	unit = DISKUNIT(dev);
++
++	sc = device_lookup_private(&gdrom_cd, unit);
++	if (sc == NULL)
++		return ENXIO;
++
++	if (sc->is_open)
++		return EBUSY;
++
++	s = splbio();
++	while (sc->is_busy)
++		tsleep(&sc->is_busy, PRIBIO, "gdbusy", 0);
++	sc->is_busy = true;
++	splx(s);
++
++	for (cnt = 0; cnt < 1; cnt++)
++		if ((error = gdrom_mount_disk(sc)) == 0)
++			break;
++
++	if (error == 0)
++		error = gdrom_read_toc(sc, &toc);
++
++	sc->is_busy = false;
++	wakeup(&sc->is_busy);
++
++	if (error != 0)
++		return error;
++
++	sc->is_open = true;
++	sc->openpart_start = 150;
++
++	DPRINTF(("GDROM: open OK\n"));
++	return 0;
++}
++
++int
++gdromclose(dev_t dev, int flags, int devtype, struct lwp *l)
++{
++	struct gdrom_softc *sc;
++	int unit;
++
++	DPRINTF(("GDROM: close\n"));
++
++	unit = DISKUNIT(dev);
++	sc = device_lookup_private(&gdrom_cd, unit);
++
++	sc->is_open = false;
++
++	return 0;
++}
++
++void
++gdromstrategy(struct buf *bp)
++{
++	struct gdrom_softc *sc;
++	struct scsipi_periph *periph;
++	int s, unit;
++
++	DPRINTF(("GDROM: strategy\n"));
++	
++	unit = DISKUNIT(bp->b_dev);
++	sc = device_lookup_private(&gdrom_cd, unit);
++	periph = sc->sc_periph;
++
++	if (bp->b_bcount == 0)
++		goto done;
++
++	bp->b_rawblkno = bp->b_blkno / (2048 / DEV_BSIZE) + sc->openpart_start;
++
++	DPRINTF(("GDROM: read_sectors(%p, %lld, %d) [%d bytes]\n",
++	    bp->b_data, bp->b_rawblkno,
++	    bp->b_bcount >> 11, bp->b_bcount));
++
++	s = splbio();
++	bufq_put(sc->sc_bufq, bp);
++	splx(s);
++	if (!sc->is_active)
++		gdrom_start(periph);
++	return;
++
++ done:
++	bp->b_resid = bp->b_bcount;
++	biodone(bp);
++}
++
++void
++gdrom_start(struct scsipi_periph *periph)
++{
++	struct gdrom_softc *sc = device_private(periph->periph_dev);
++	struct buf *bp;
++	int error, s;
++
++	sc->is_active = true;
++
++	for (;;) {
++		s = splbio();
++		bp = bufq_get(sc->sc_bufq);
++		if (bp == NULL) {
++			splx(s);
++			break;
++		}
++
++		while (sc->is_busy)
++			tsleep(&sc->is_busy, PRIBIO, "gdbusy", 0);
++		sc->is_busy = true;
++		disk_busy(&sc->sc_dk);
++		splx(s);
++
++		error = gdrom_read_sectors(sc, bp);
++		bp->b_error = error;
++		if (error != 0)
++			bp->b_resid = bp->b_bcount;
++
++		sc->is_busy = false;
++		wakeup(&sc->is_busy);
++		
++		s = splbio();
++		disk_unbusy(&sc->sc_dk, bp->b_bcount - bp->b_resid,
++		    (bp->b_flags & B_READ) != 0);
++		splx(s);
++		biodone(bp);
++	}
++
++	sc->is_active = false;
++}
++
++void
++gdrom_done(struct scsipi_xfer *xs, int error)
++{
++
++	DPRINTF(("%s: called\n", __func__));
++}
++
++int
++gdromioctl(dev_t dev, u_long cmd, void *addr, int flag, struct lwp *l)
++{
++	struct gdrom_softc *sc;
++	int unit, error;
++
++	DPRINTF(("GDROM: ioctl %lx\n", cmd));
++
++	unit = DISKUNIT(dev);
++	sc = device_lookup_private(&gdrom_cd, unit);
++
++	switch (cmd) {
++	case CDIOREADMSADDR: {
++		int s, track, sessno = *(int *)addr;
++		struct gd_toc toc;
++
++		if (sessno != 0)
++			return EINVAL;
++
++		s = splbio();
++		while (sc->is_busy)
++			tsleep(&sc->is_busy, PRIBIO, "gdbusy", 0);
++		sc->is_busy = true;
++		splx(s);
++
++		error = gdrom_read_toc(sc, &toc);
++
++		sc->is_busy = false;
++		wakeup(&sc->is_busy);
++
++		if (error != 0)
++			return error;
++#ifdef GDROMDEBUGTOC 
++		{ /* Dump the GDROM TOC */
++		unsigned char *ptr = (unsigned char *)&toc;
++		int i;
++
++		printf("gdrom: TOC\n");
++		for(i = 0; i < sizeof(toc); ++i) {
++			printf("%02x", *ptr++);
++			if( i%32 == 31)
++				printf("\n");
++			else if( i%4 == 3)
++				printf(",");
++		}
++		printf("\n");
++		}
++#endif
++		for (track = TOC_TRACK(toc.last);
++		    track >= TOC_TRACK(toc.first);
++		    --track) {
++			if (track < 1 || track > 100)
++				return ENXIO;
++			if (TOC_CTRL(toc.entry[track - 1]))
++				break;
++		}
++
++#ifdef GDROMDEBUGTOC 
++		printf("gdrom: Using track %d, LBA %u\n", track,
++		    TOC_LBA(toc.entry[track - 1]));
++#endif
++
++		*(int *)addr = htonl(TOC_LBA(toc.entry[track - 1])) -
++		    sc->openpart_start;
++
++		return 0;
++	}
++	default:
++		return ENOTTY;
++	}
++
++#ifdef DIAGNOSTIC
++	panic("gdromioctl: impossible");
++#endif
++}
++
++
++int
++gdromread(dev_t dev, struct uio *uio, int flags)
++{
++
++	DPRINTF(("GDROM: read\n"));
++	return physio(gdromstrategy, NULL, dev, B_READ, minphys, uio);
++}
++
++int
++gdromwrite(dev_t dev, struct uio *uio, int flags)
++{
++
++	return EROFS;
++}
+diff --git a/dev/g1/wdc_g1.c b/dev/g1/wdc_g1.c
+new file mode 100644
+index 0000000..641b6a2
+--- /dev/null
++++ b/dev/g1/wdc_g1.c
+@@ -0,0 +1,218 @@
++/* $NetBSD$ */
++
++/*-
++ * Copyright (c) 1998 The NetBSD Foundation, Inc.
++ * All rights reserved.
++ *
++ * This code is derived from software contributed to The NetBSD Foundation
++ * by Charles M. Hannum and by Onno van der Linden.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
++ * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
++ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
++ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
++ * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
++ * POSSIBILITY OF SUCH DAMAGE.
++ */
++
++#include "opt_ata.h"	/* for ATADEBUG */
++
++#include <sys/param.h>
++#include <sys/systm.h>
++#include <sys/device.h>
++#include <sys/malloc.h>
++#include <sys/bus.h>
++
++#include <machine/intr.h>
++#include <machine/sysasicvar.h>
++
++#include <arch/dreamcast/dev/g1/g1busvar.h>
++
++#include <dev/ata/atavar.h>
++#include <dev/ic/wdcvar.h>
++#include <dev/ata/atareg.h>
++
++#define WDC_G1_CMD_ADDR			0x005f7080
++#define WDC_G1_REG_NPORTS		8
++#define WDC_G1_CTL_ADDR			0x005f7018
++#define WDC_G1_AUXREG_NPORTS		1
++
++struct wdc_g1_softc {
++	struct	wdc_softc sc_wdcdev;
++	struct	ata_channel *wdc_chanlist[1];
++	struct	ata_channel ata_channel;
++	struct	ata_queue wdc_chqueue;
++	struct	wdc_regs wdc_regs;
++	void	*sc_ih;
++	int	sc_irq;
++};
++
++static int	wdc_g1_probe(device_t, cfdata_t, void *);
++static void	wdc_g1_attach(device_t, device_t, void *);
++static void	wdc_g1_do_reset(struct ata_channel *, int);
++static int	wdc_g1_intr(void *);
++
++CFATTACH_DECL_NEW(wdc_g1bus, sizeof(struct wdc_g1_softc),
++    wdc_g1_probe, wdc_g1_attach, NULL, NULL);
++
++static int
++wdc_g1_probe(device_t parent, cfdata_t cf, void *aux)
++{
++	struct ata_channel ch;
++	struct g1bus_attach_args *ga = aux;
++	struct wdc_softc wdc;
++	struct wdc_regs wdr;
++	int result = 0, i;
++#ifdef ATADEBUG
++	struct device dev;
++#endif
++
++	*((volatile uint32_t *)0xa05f74e4) = 0x1fffff;
++	for (i = 0; i < 0x200000 / 4; i++)
++		(void)((volatile uint32_t *)0xa0000000)[i];
++
++	memset(&wdc, 0, sizeof(wdc));
++	memset(&ch, 0, sizeof(ch));
++	ch.ch_atac = &wdc.sc_atac;
++	wdc.reset = wdc_g1_do_reset;
++	wdc.regs = &wdr;
++
++	wdr.cmd_iot = ga->ga_memt;
++	if (bus_space_map(wdr.cmd_iot, WDC_G1_CMD_ADDR,
++	    WDC_G1_REG_NPORTS * 4, 0, &wdr.cmd_baseioh))
++		goto out;
++
++	for (i = 0; i < WDC_G1_REG_NPORTS; i++) {
++		if (bus_space_subregion(wdr.cmd_iot, wdr.cmd_baseioh, i * 4,
++		    i == 0 ? 2 : 1, &wdr.cmd_iohs[i]) != 0)
++			goto outunmap;
++	}
++
++	wdc_init_shadow_regs(&ch);
++
++	wdr.ctl_iot = ga->ga_memt;
++	if (bus_space_map(wdr.ctl_iot, WDC_G1_CTL_ADDR,
++	    WDC_G1_AUXREG_NPORTS, 0, &wdr.ctl_ioh))
++	  goto outunmap;
++
++#ifdef ATADEBUG
++	/* fake up device name for ATADEBUG_PRINT() with DEBUG_PROBE */
++	memset(&dev, 0, sizeof(dev));
++	strncat(dev.dv_xname, "wdc(g1probe)", sizeof(dev.dv_xname));
++	wdc.sc_atac.atac_dev = &dev;
++#endif
++	result = wdcprobe(&ch);
++	
++	bus_space_unmap(wdr.ctl_iot, wdr.ctl_ioh, WDC_G1_AUXREG_NPORTS);
++ outunmap:
++	bus_space_unmap(wdr.cmd_iot, wdr.cmd_baseioh, WDC_G1_REG_NPORTS);
++ out:
++	return result;
++}
++
++static void
++wdc_g1_attach(struct device *parent, struct device *self, void *aux)
++{
++	struct wdc_g1_softc *sc = device_private(self);
++	struct wdc_regs *wdr;
++	struct g1bus_attach_args *ga = aux;
++	int i;
++
++	sc->sc_wdcdev.sc_atac.atac_dev = self;
++	sc->sc_wdcdev.regs = wdr = &sc->wdc_regs;
++
++	wdr->cmd_iot = ga->ga_memt;
++	wdr->ctl_iot = ga->ga_memt;
++	if (bus_space_map(wdr->cmd_iot, WDC_G1_CMD_ADDR,
++	    WDC_G1_REG_NPORTS * 4, 0, &wdr->cmd_baseioh) ||
++	    bus_space_map(wdr->ctl_iot, WDC_G1_CTL_ADDR,
++	    WDC_G1_AUXREG_NPORTS, 0, &wdr->ctl_ioh)) {
++		aprint_error(": couldn't map registers\n");
++		return;
++	}
++
++	for (i = 0; i < WDC_G1_REG_NPORTS; i++) {
++		if (bus_space_subregion(wdr->cmd_iot,
++		      wdr->cmd_baseioh, i * 4, i == 0 ? 2 : 1,
++		      &wdr->cmd_iohs[i]) != 0) {
++			aprint_error(": couldn't subregion registers\n");
++			return;
++		}
++	}
++
++	sc->sc_wdcdev.cap |= WDC_CAPABILITY_PREATA;
++	sc->sc_wdcdev.sc_atac.atac_cap |= ATAC_CAP_DATA16;
++	sc->sc_wdcdev.sc_atac.atac_pio_cap = 0;
++	sc->wdc_chanlist[0] = &sc->ata_channel;
++	sc->sc_wdcdev.sc_atac.atac_channels = sc->wdc_chanlist;
++	sc->sc_wdcdev.sc_atac.atac_nchannels = 1;
++	sc->sc_wdcdev.wdc_maxdrives = 2;
++	sc->sc_wdcdev.reset = wdc_g1_do_reset;
++	sc->ata_channel.ch_channel = 0;
++	sc->ata_channel.ch_atac = &sc->sc_wdcdev.sc_atac;
++	sc->ata_channel.ch_queue = &sc->wdc_chqueue;
++	wdc_init_shadow_regs(&sc->ata_channel);
++
++	aprint_normal(": %s\n", sysasic_intr_string(SYSASIC_IRL9));
++
++	sysasic_intr_establish(SYSASIC_EVENT_GDROM, IPL_BIO, SYSASIC_IRL9,
++	    wdc_g1_intr, &sc->ata_channel);
++
++	wdcattach(&sc->ata_channel);
++}
++
++int
++wdc_g1_intr(void *arg)
++{
++
++//	printf("%s: called\n", __func__);
++	return wdcintr(arg);
++}
++
++static void
++wdc_g1_do_reset(struct ata_channel *chp, int poll)
++{
++	struct wdc_softc *wdc = CHAN_TO_WDC(chp);
++	struct wdc_regs *wdr = &wdc->regs[chp->ch_channel];
++	int s = 0;
++
++	if (poll != 0)
++		s = splbio();
++
++	/* master */
++	bus_space_write_1(wdr->cmd_iot, wdr->cmd_iohs[wd_sdh], 0,
++	    WDSD_IBM);
++	delay(10);	/* 400ns delay */
++	/* assert SRST, wait for reset to complete */
++	bus_space_write_1(wdr->ctl_iot, wdr->ctl_ioh, wd_aux_ctlr,
++	    WDCTL_RST | WDCTL_4BIT | WDCTL_IDS);
++	delay(2000);
++	(void) bus_space_read_1(wdr->cmd_iot, wdr->cmd_iohs[wd_error], 0);
++	bus_space_write_1(wdr->ctl_iot, wdr->ctl_ioh, wd_aux_ctlr,
++	    WDCTL_4BIT | WDCTL_IDS);
++	delay(10);	/* 400ns delay */
++
++	/* reset GD-ROM at master via ATAPI command */
++	bus_space_write_1(wdr->cmd_iot, wdr->cmd_iohs[wd_sdh], 0,
++	    WDSD_IBM);
++	bus_space_write_1(wdr->cmd_iot, wdr->cmd_iohs[wd_command], 0,
++	    ATAPI_SOFT_RESET);
++	delay(100 * 1000);
++
++	if (poll != 0)
++		splx(s);
++}
